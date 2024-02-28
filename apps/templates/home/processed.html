@@ -1,0 +1,70 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Page Blank {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+                    <div class="page-header">
+                        <div class="page-block">
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <div class="page-header-title">
+                                        <h5 class="m-b-10">Processed Page</h5>
+                                    </div>
+                                    <ul class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:">Processed Page</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ breadcrumb ] end -->
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Dataset</h4>
+                            </div>
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                                    <table id="myTable" class="table table-striped" style="white-space: normal;">
+                                        <thead>
+                                            <tr>
+                                                <th style="white-space: normal;" class="col-xl-2">Title</th>
+                                                <th style="white-space: normal;" class="col-xl-8">Summary</th>
+                                                <th style="white-space: normal;" class="col-xl-2">Primary Category</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for row in data_list %}
+                                            <tr>
+                                                <td style="white-space: normal;" class="col-xl-2">{{ row[1] }}</td>
+                                                <td style="white-space: normal;" class="col-xl-8">{{ row[2] }}</td>
+                                                <td style="white-space: normal;" class="col-xl-2">{{ row[3] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

@@ -1,0 +1,123 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Page Blank {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+                    <div class="page-header">
+                        <div class="page-block">
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <div class="page-header-title">
+                                        <h5 class="m-b-10">Predict Page</h5>
+                                    </div>
+                                    <ul class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:">Predict Page</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ breadcrumb ] end -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Klasifikasi Kategori Jurnal</h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <form action="/predict.html" method="post">
+                                                    <div class="input-group mb-3">
+                                                        <input type="text" class="form-control" name="text" placeholder="Masukkan judul/abstrak jurnal" aria-label="" aria-describedby="basic-addon2">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary" type="submit">Button</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ Main Content ] end -->
+                            <div class="card-block table-border-style">
+                                {% for item in perfs %}
+                                <span class="d-block m-t-5"> Use k <code>{{ item['best_n'] }}</code></span>
+                                <span class="d-block m-t-5"> Use metric <code>{{ item['best_metric'] }}</code></span>
+                                <span class="d-block m-t-5"> Accuracy <code>{{ item['best_accuracy'] }}</code></span>
+                                <span class="d-block m-t-5"><code>Hasil Prediksi Menggunakan Model Terbaik di Performance</code></span>
+                                <li data-username="Table bootstrap datatable footable" 
+                                class="nav-item {% if 'tbl_bootstrap' in segment %} active {% endif %}">
+                                <a href="/tbl_performance.html" class="nav-link "><span class="pcoded-micon"><i
+                                        class="feather icon-bar-chart"></i></span><span class="pcoded-mtext">Performance</span></a>
+                                </li>  
+                                {% endfor %}
+                                <div class="table-responsive">
+                                    <table style="white-space: normal;" id="myTable" class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th style="white-space: normal;">Kategori</th>
+                                                <th style="white-space: normal;">Hasil</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in perfs %}
+                                            <tr>
+                                                <td style="white-space: normal;">Text</td>
+                                                <td style="white-space: normal;">{{ item['text_cleaning'] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% for item in perfs %}
+                                            <tr>
+                                                <td style="white-space: normal;">Cleansing</td>
+                                                <td style="white-space: normal;">{{ item['text'] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% for item in perfs %}
+                                            <tr>
+                                                <td style="white-space: normal;">Casefolding</td>
+                                                <td style="white-space: normal;">{{ item['text_casefolding'] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% for item in perfs %}
+                                            <tr>
+                                                <td style="white-space: normal;">Stopword</td>
+                                                <td style="white-space: normal;">{{ item['text_stopword'] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% for item in perfs %}
+                                            <tr>
+                                                <td style="white-space: normal;">Kategori</td>
+                                                <td style="white-space: normal;">{{ item['predicted_class'] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

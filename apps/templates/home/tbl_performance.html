@@ -1,0 +1,126 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Tables {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <section class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+                    <div class="page-header">
+                        <div class="page-block">
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <div class="page-header-title">
+                                        <h5 class="m-b-10">Performance Tables</h5>
+                                    </div>
+                                    <ul class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:">Tables</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ breadcrumb ] end -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+                                <!-- [ stiped-table ] start -->
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5>Input K</h5>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <form action="/tbl_performance.html" method="post">
+                                                        <div class="input-group mb-3">
+                                                            <input type="text" class="form-control" name="input_n" placeholder="17,19,21,23" aria-label="" aria-describedby="basic-addon2">
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-primary" type="submit">Button</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                            <input type="radio" id="customRadioInline4" name="metrick" value="all" class="custom-control-input">
+                                                            <label class="custom-control-label" for="customRadioInline4">All</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                            <input type="radio" id="customRadioInline1" name="metrick" value="cosine" class="custom-control-input">
+                                                            <label class="custom-control-label" for="customRadioInline1">Cosine</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                            <input type="radio" id="customRadioInline2" name="metrick" value="euclidean" class="custom-control-input">
+                                                            <label class="custom-control-label" for="customRadioInline2">Euclidean</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                            <input type="radio" id="customRadioInline3" name="metrick" value="manhattan" class="custom-control-input">
+                                                            <label class="custom-control-label" for="customRadioInline3">Manhattan</label>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-block table-border-style">
+                                            <span class="d-block m-t-5"> BEST k <code>{{ best['n'] }}</code></span>
+                                            <span class="d-block m-t-5"> BEST metric <code>{{ best['metric'] }}</code></span>
+                                            <span class="d-block m-t-5"> BEST accuracy <code>{{ best['accuracy'] }}</code></span>
+                                            <div class="table-responsive">
+                                                <table id="myTable" class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>k</th>
+                                                            <th>Metrik</th>
+                                                            <th>Akurasi</th>
+                                                            <th>Presisi</th>
+                                                            <th>Recall</th>
+                                                            <th>F1-Score</th> 
+                                                            <th>Mean CV accuracy</th>
+                                                            <th>CV Accuracy Std Dev</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for p in perf %}
+                                                        <tr>
+                                                            <td>{{ p.n }}</td>
+                                                            <td>{{ p.metric }}</td>
+                                                            <td>{{ p.accuracy }}</td>
+                                                            <td>{{ p.precision }}</td>
+                                                            <td>{{ p.recall }}</td>
+                                                            <td>{{ p.f1_score }}</td>
+                                                            <td>{{ p.mean_cv_accuracy }}</td>
+                                                            <td>{{ p.cv_accuracy_std_dev }}</td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- [ stiped-table ] end -->
+                            </div>
+                            <!-- [ Main Content ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+{% endblock javascripts %}
