@@ -124,10 +124,11 @@ def route_template(template):
                 text = str(text)
                 perfs = predicted(text)
                 segment = get_segment(request)
-                return render_template("home/" + template, segment=segment, perfs = perfs)
+                return render_template("home/" + template, segment=segment, perfs = perfs,text=text)
+            text = "kosong"
             segment = get_segment(request)
-            perfs = predicted("kosong")
-            return render_template("home/" + template, segment=segment, perfs = perfs)
+            perfs = predicted(text)
+            return render_template("home/" + template, segment=segment, perfs = perfs,text=text)
         # Detect the current page
         segment = get_segment(request)
 

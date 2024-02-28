@@ -164,5 +164,5 @@ def predicted(text):
     best_ns = best_n
     best_metrics = best_metric
     hasil=[]
-    hasil.append({"predicted_class":predicted_category,"text":text,"text_cleaning":text_cleaning,"text_casefolding":text_casefolding,"text_stopword":text_stopword,"text_stemming":text_stemming,"best_accuracy":best_accuracys,'best_n':best_ns,'best_metric':best_metrics})  
+    hasil.append({"predicted_class":predicted_category,"text":text,"text_cleaning":text_cleaning,"text_casefolding":text_casefolding,"text_stopword":text_stopword,"text_tokenizing":tokens,"text_stemming":text_stemming,"best_accuracy":best_accuracys,'best_n':best_ns,'best_metric':best_metrics})  
     return hasil

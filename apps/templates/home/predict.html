@@ -75,18 +75,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for item in perfs %}
                                             <tr>
                                                 <td style="white-space: normal;">Text</td>
-                                                <td style="white-space: normal;">{{ item['text_cleaning'] }}</td>
+                                                <td style="white-space: normal;">{{ text }}</td>
                                             </tr>
-                                            {% endfor %}
-                                            {% for item in perfs %}
-                                            <tr>
-                                                <td style="white-space: normal;">Cleansing</td>
-                                                <td style="white-space: normal;">{{ item['text'] }}</td>
-                                            </tr>
-                                            {% endfor %}
                                             {% for item in perfs %}
                                             <tr>
                                                 <td style="white-space: normal;">Casefolding</td>
@@ -95,8 +87,20 @@
                                             {% endfor %}
                                             {% for item in perfs %}
                                             <tr>
-                                                <td style="white-space: normal;">Stopword</td>
+                                                <td style="white-space: normal;">Stopword Removal</td>
                                                 <td style="white-space: normal;">{{ item['text_stopword'] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% for item in perfs %}
+                                            <tr>
+                                                <td style="white-space: normal;">Tokenizing</td>
+                                                <td style="white-space: normal;">{{ item['text_tokenizing'] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% for item in perfs %}
+                                            <tr>
+                                                <td style="white-space: normal;">Stemming</td>
+                                                <td style="white-space: normal;">{{ item['text_stemming'] }}</td>
                                             </tr>
                                             {% endfor %}
                                             {% for item in perfs %}
