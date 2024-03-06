@@ -24,17 +24,6 @@
                                             <h5>Data Raw</h5>
                                             
                                         </div>
-                                        <div class="card-block">
-                                            <!-- <p style="font-weight:bold; color:red;">"Note:
-                                                Data dapat diubah dengan mengakses file ekstensi .csv pada folder local komputer sistem analisis ini."
-                                            </p> -->
-                                            <p>Format File dapat di Download disini <a href="{{ config.ASSETS_ROOT }}/filedata/format.csv" target="_blank">Disini</a></p>
-                                            <!-- <form action="/upload_csv" method="post" enctype="multipart/form-data">
-                                                <input type="file" name="csv_file"
-                                                    accept=".csv">
-                                                <input type="submit" value="Upload">
-                                            </form> -->
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +91,7 @@
                                             <input class="form-control" id="myInput" type="text" placeholder="Search..">
                                             <br>
                                             <div class="table-responsive">
-                                                <table id="myTable" class="table table-striped table-bordered table-sm" style="white-space: normal;">
+                                                <table id="myTables" class="table table-striped table-bordered table-sm" style="white-space: normal;">
                                                     <thead>
                                                         <tr>
                                                             <th style="white-space: normal;" class="col-xl-2">Title</th>
@@ -146,7 +135,7 @@
 $(document).ready(function(){
   $("#myInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
-    $("#myTable tr").filter(function() {
+    $("#myTables tr").filter(function() {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
   });

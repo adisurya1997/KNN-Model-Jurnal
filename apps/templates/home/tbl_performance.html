@@ -73,12 +73,14 @@
                                             <span class="d-block m-t-5"> BEST k <code>{{ best['n'] }}</code></span>
                                             <span class="d-block m-t-5"> BEST metric <code>{{ best['metric'] }}</code></span>
                                             <span class="d-block m-t-5"> BEST accuracy <code>{{ best['accuracy'] }}</code></span>
+                                            <span class="d-block m-t-5"> BEST weight <code>{{ best['weight'] }}</code></span>
                                             <div class="table-responsive">
                                                 <table id="myTable" class="table table-striped">
                                                     <thead>
                                                         <tr>
                                                             <th>k</th>
                                                             <th>Metrik</th>
+                                                            <th>Weight</th>
                                                             <th>Akurasi</th>
                                                             <th>Presisi</th>
                                                             <th>Recall</th>
@@ -92,6 +94,7 @@
                                                         <tr>
                                                             <td>{{ p.n }}</td>
                                                             <td>{{ p.metric }}</td>
+                                                            <td>{{ p.weight }}</td>
                                                             <td>{{ p.accuracy }}</td>
                                                             <td>{{ p.precision }}</td>
                                                             <td>{{ p.recall }}</td>

@@ -40,27 +40,27 @@ def index():
     data_list = df.values.tolist()
     return render_template('home/index.html', segment='index',categories=categories,data_list=data_list,category_counts=category_counts)
 
-@blueprint.route('/upload_csv', methods=['GET', 'POST'])
-def upload_csv():
-    if request.method == 'POST':
-        # Pastikan file sudah diunggah
-        if 'csv_file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['csv_file']
-        # Pastikan nama file tidak kosong
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        # Pastikan file merupakan file CSV yang diizinkan
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(UPLOAD_FOLDER,filename))
-            flash('File uploaded successfully')
-            return render_template('home/index.html'), 200
-        else:
-            flash('Invalid file format. Please upload a CSV file.')
-    return render_template('home/index.html')
+# @blueprint.route('/upload_csv', methods=['GET', 'POST'])
+# def upload_csv():
+#     if request.method == 'POST':
+#         # Pastikan file sudah diunggah
+#         if 'csv_file' not in request.files:
+#             flash('No file part')
+#             return redirect(request.url)
+#         file = request.files['csv_file']
+#         # Pastikan nama file tidak kosong
+#         if file.filename == '':
+#             flash('No selected file')
+#             return redirect(request.url)
+#         # Pastikan file merupakan file CSV yang diizinkan
+#         if file and allowed_file(file.filename):
+#             filename = secure_filename(file.filename)
+#             file.save(os.path.join(UPLOAD_FOLDER,filename))
+#             flash('File uploaded successfully')
+#             return render_template('home/index.html'), 200
+#         else:
+#             flash('Invalid file format. Please upload a CSV file.')
+#     return render_template('home/index.html')
 @blueprint.route('/<template>', methods=['GET', 'POST'])
 @login_required
 def route_template(template):
@@ -88,12 +88,14 @@ def route_template(template):
                 input_n_list = [int(x) for x in input_n.split(',')]
                 if n_metrick == 'all':
                     n_metrick = ["cosine","euclidean","manhattan"]
-                    perf = proces("performa",input_n_list,n_metrick)
+                    n_weights = ["distance","uniform"]
+                    perf = proces("performa",input_n,n_metrick,n_weights)
                     segment = get_segment(request)
                     best = get_best_accuracy(perf)
                     return render_template("home/" + template, segment=segment, perf = perf,best=best)
                 n_metrick = [n_metrick]
-                perf = proces("performa",input_n_list,n_metrick)
+                n_weights = ["distance","uniform"]
+                perf = proces("performa",input_n,n_metrick,n_weights)
                 segment = get_segment(request)
                 best = get_best_accuracy(perf)
                 return render_template("home/" + template, segment=segment, perf = perf,best=best)
@@ -101,7 +103,8 @@ def route_template(template):
                 starts += 1
                 input_n = [17,19,21]
                 n_metrick = ["cosine","euclidean"]
-                perf = proces("performa",input_n,n_metrick)
+                n_weights = ["distance","uniform"]
+                perf = proces("performa",input_n,n_metrick,n_weights)
                 best = get_best_accuracy(perf)
                 segment = get_segment(request)
                 # Serve the file (if exists) from app/templates/home/FILE.html
@@ -117,7 +120,8 @@ def route_template(template):
             if starts == 0:
                 input_n = [17,19,21]
                 n_metrick = ["cosine","euclidean"]
-                perf = proces("performa",input_n,n_metrick)
+                n_weights = ["distance","uniform"]
+                perf = proces("performa",input_n,n_metrick,n_weights)
                 starts += 1
             if request.method == 'POST':
                 text = request.form.get('text')

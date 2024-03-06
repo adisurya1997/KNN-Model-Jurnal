@@ -67,21 +67,25 @@ def tfidf(X_train, X_test):
   X_test_tfidf = vectorizer.transform(X_test)
   return X_train_tfidf, X_test_tfidf, vectorizer
 
-def modelKnn(n,metric, X_train_tfidf, X_test_tfidf,y_train):
-  knn = KNeighborsClassifier(n_neighbors=n, metric=metric, weights="distance")
+def modelKnn(n,metric, X_train_tfidf, X_test_tfidf,y_train,weight):
+  if weight == "uniform":
+    knn = KNeighborsClassifier(n_neighbors=n, metric=metric)
+  else:
+    knn = KNeighborsClassifier(n_neighbors=n, metric=metric, weights="distance")
   knn.fit(X_train_tfidf, y_train)
   y_pred = knn.predict(X_test_tfidf)
   return y_pred, knn
 knn_model = []
 vectorizer = []
 best_accuracy = []
-def processing(info,input_n,n_metrick):
+def processing(info,input_n,n_metrick,n_weights):
     global best_n
     global best_metric
     global best_accuracy
     global vectorizer
     global knn_model
     global perf
+    global best_weight
     df = pd.read_csv("apps/static/assets/filedata/output.csv", usecols=['Title','Summary','Primary Category'])
     df.dropna(inplace=True)
     df['Text'] = df['Title'] + ' ' + df['Summary']
@@ -94,38 +98,46 @@ def processing(info,input_n,n_metrick):
     matricts = n_metrick
     perf=[]
     best_accuracy = 0
+    weights= n_weights
     for n in n_knn:
         #print("=== n : ", e)
         for matrict in matricts:
-            X_train_tfidf, X_test_tfidf, vectorizer = tfidf(X_train, X_test)
-            y_pred, knn = modelKnn(n,matrict, X_train_tfidf, X_test_tfidf,y_train)
-            report = classification_report(y_test, y_pred)
-            accuracy = accuracy_score(y_test, y_pred)
-            #  confusion = confusion_matrix(y_test, y_pred)
-            report_precision = mean(precision_score(y_test, y_pred,average=None))
-            report_recall = mean(recall_score(y_test, y_pred,average=None))
-            report_f1_score=mean(f1_score(y_test,y_pred,average=None))
-            scores = cross_val_score(knn, X_train_tfidf, y_train, cv=5)
-            mean_cv_accuracy = scores.mean()
-            cv_accuracy_std_dev = scores.std()
-            confusion = confusion_matrix(y_test, y_pred)
-            if accuracy > best_accuracy:
-                best_accuracy = accuracy
-                knn_model = knn
-                best_n = n
-                best_metric = matrict
-            if info == "confusion":
-                # Buat plot matriks konfusi
-                plt.figure(figsize=(8, 6))
-                sns.heatmap(confusion, annot=True, fmt="d", cmap="Blues", cbar=False)
-                plt.xlabel("Predicted")
-                plt.ylabel("Actual")
-                plt.title("Confusion Matrix")
-                plt.savefig("apps/static/assets/images/confusion/cm_"+matrict+str(n)+".png", dpi=240)
-            else:
-                perf.append({"n":n,"metric":matrict,"accuracy":accuracy,"report":report,"f1_score":report_f1_score,"precision":report_precision,"recall":report_recall,'mean_cv_accuracy':mean_cv_accuracy,'cv_accuracy_std_dev':cv_accuracy_std_dev})
-    return perf
+            for weight in weights:
+                X_train_tfidf, X_test_tfidf, vectorizer = tfidf(X_train, X_test)
+                y_pred, knn = modelKnn(n,matrict, X_train_tfidf, X_test_tfidf,y_train,weight)
+                report = classification_report(y_test, y_pred)
+                accuracy = accuracy_score(y_test, y_pred)
+                #  confusion = confusion_matrix(y_test, y_pred)
+                report_precision = mean(precision_score(y_test, y_pred,average=None))
+                report_recall = mean(recall_score(y_test, y_pred,average=None))
+                report_f1_score=mean(f1_score(y_test,y_pred,average=None))
+                scores = cross_val_score(knn, X_train_tfidf, y_train, cv=5)
+                mean_cv_accuracy = scores.mean()
+                cv_accuracy_std_dev = scores.std()
+                confusion = confusion_matrix(y_test, y_pred)
+                if accuracy > best_accuracy:
+                    best_accuracy = accuracy
+                    best_weight = weight
+                    knn_model = knn
+                    best_n = n
+                    best_metric = matrict
+                if info == "confusion":
+                    # Buat plot matriks konfusi
+                    plt.figure(figsize=(8, 6))
+                    sns.heatmap(confusion, annot=True, fmt="d", cmap="Blues", cbar=False)
+                    plt.xlabel("Predicted")
+                    plt.ylabel("Actual")
+                    plt.title("Confusion Matrix")
+                    plt.savefig("apps/static/assets/images/confusion/cm_"+matrict+str(n)+".png", dpi=240)
+                else:
+                    if matrict == "cosine":
+                        perf.append({"n":n,"metric":"cosine similarity","weight":weight,"accuracy":accuracy,"report":report,"f1_score":report_f1_score,"precision":report_precision,"recall":report_recall,'mean_cv_accuracy':mean_cv_accuracy,'cv_accuracy_std_dev':cv_accuracy_std_dev})
+                    elif matrict == "euclidean":
+                        perf.append({"n":n,"metric":"euclidean distance","weight":weight,"accuracy":accuracy,"report":report,"f1_score":report_f1_score,"precision":report_precision,"recall":report_recall,'mean_cv_accuracy':mean_cv_accuracy,'cv_accuracy_std_dev':cv_accuracy_std_dev})
+                    else:
+                        perf.append({"n":n,"metric":matrict,"weight":weight,"accuracy":accuracy,"report":report,"f1_score":report_f1_score,"precision":report_precision,"recall":report_recall,'mean_cv_accuracy':mean_cv_accuracy,'cv_accuracy_std_dev':cv_accuracy_std_dev})
 
+    return perf
 # def predict(new_text):
 #     model = knn_model
 #     vectorizer = vectorizer
@@ -163,6 +175,7 @@ def predicted(text):
     best_accuracys = best_accuracy
     best_ns = best_n
     best_metrics = best_metric
+    best_weights = best_weight
     hasil=[]
-    hasil.append({"predicted_class":predicted_category,"text":text,"text_cleaning":text_cleaning,"text_casefolding":text_casefolding,"text_stopword":text_stopword,"text_tokenizing":tokens,"text_stemming":text_stemming,"best_accuracy":best_accuracys,'best_n':best_ns,'best_metric':best_metrics})  
+    hasil.append({"predicted_class":predicted_category,"text":text,"text_cleaning":text_cleaning,"text_casefolding":text_casefolding,"text_stopword":text_stopword,"text_tokenizing":tokens,"text_stemming":text_stemming,"best_accuracy":best_accuracys,'best_n':best_ns,'best_metric':best_metrics,'best_weight':best_weights})  
     return hasil
